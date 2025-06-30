@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ali! 🎉</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Page 1: Happy Birthday -->
+        <div class="page active" id="page1">
+            <div class="content">
+                <h1 class="main-title">Happy Birthday</h1>
+                <h2 class="name">Ali</h2>
+                <div class="cake">
+                    <div class="cake-layer layer-bottom"></div>
+                    <div class="cake-layer layer-middle"></div>
+                    <div class="cake-layer layer-top"></div>
+                    <div class="candle">
+                        <div class="flame"></div>
+                    </div>
+                </div>
+                <button class="next-btn" onclick="nextPage()">Next →</button>
+            </div>
+        </div>
+
+        <!-- Page 2: Birthday Wishes -->
+        <div class="page" id="page2">
+            <div class="content">
+                <h1 class="wishes-title">Birthday Wishes</h1>
+                <div class="wish-card">
+                    <p class="wish-text">
+                        Dear Ali,<br><br>
+                        On this special day, I want to celebrate you and all the joy you bring to the world. 
+                        Your kindness, your smile, and your beautiful spirit make every day brighter.<br><br>
+                        May this year bring you endless happiness, amazing adventures, and all the love you deserve. 
+                        You are truly special and loved beyond measure.<br><br>
+                        Here's to another year of wonderful memories together! 🎂✨
+                    </p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="prev-btn" onclick="prevPage()">← Previous</button>
+                    <button class="like-btn" onclick="showSoulmateMessage()">Do you like it? 💕</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Soulmate Message -->
+        <div class="page" id="page3">
+            <div class="content">
+                <h1 class="soulmate-title">I Love You Jan</h1>
+                <div class="soulmate-card">
+                    <div class="fancy-text">Be My Soulmate</div>
+                    <div class="heart"></div>
+                    <p class="soulmate-message">
+                        I love you so much, Jan! 💕<br><br>
+                        You are my everything, my sunshine, my happiness.<br>
+                        Thank you for being you and for making my life complete.<br><br>
+                        I want to share this special moment with you forever.<br>
+                        You are loved beyond words can express. ❤️
+                    </p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="prev-btn" onclick="prevPage()">← Previous</button>
+                    <button class="yes-btn" onclick="showYesPage()">Yes 💖</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Yes Button -->
+        <div class="page" id="page4">
+            <div class="content">
+                <h1 class="yes-title">Will You Be My Soulmate?</h1>
+                <div class="question-card">
+                    <p class="question-text">
+                        Jan, you make my heart skip a beat every time I see you.<br><br>
+                        Your smile lights up my world, and your love makes me complete.<br><br>
+                        I want to spend every moment of my life with you.<br><br>
+                        Will you be my soulmate forever? 💕
+                    </p>
+                </div>
+                <button class="fireworks-btn" onclick="startFireworks()">Yes 💖</button>
+                <div class="fireworks-timer" id="fireworksTimer">
+                    <span class="timer-text">Fireworks: <span id="timerDisplay">00:30</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fireworks Container -->
+    <div id="fireworksContainer" class="fireworks-container"></div>
+
+    <script>
+        let currentPage = 1;
+        let fireworksInterval = null;
+        let timerInterval = null;
+        let fireworksActive = false;
+
+        function nextPage() {
+            if (currentPage < 4) {
+                document.getElementById('page' + currentPage).classList.remove('active');
+                currentPage++;
+                document.getElementById('page' + currentPage).classList.add('active');
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                document.getElementById('page' + currentPage).classList.remove('active');
+                currentPage--;
+                document.getElementById('page' + currentPage).classList.add('active');
+            }
+        }
+
+        function showSoulmateMessage() {
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById('page3').classList.add('active');
+            currentPage = 3;
+        }
+
+        function showYesPage() {
+            document.getElementById('page3').classList.remove('active');
+            document.getElementById('page4').classList.add('active');
+            currentPage = 4;
+        }
+
+        function startFireworks() {
+            if (fireworksActive) return;
+            
+            fireworksActive = true;
+            
+            // Hide button and show timer
+            document.querySelector('.fireworks-btn').style.display = 'none';
+            document.getElementById('fireworksTimer').style.display = 'block';
+            
+            // Start 30-second countdown
+            let timeLeft = 30; // 30 seconds
+            const timerDisplay = document.getElementById('timerDisplay');
+            
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    stopFireworks();
+                    return;
+                }
+                timeLeft--;
+            }, 1000);
+            
+            // Start enhanced fireworks - more frequent and varied
+            fireworksInterval = setInterval(createFirework, 150); // Every 150ms for more fireworks
+            
+            // Create initial burst of fireworks
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => createFirework(), i * 100);
+            }
+        }
+
+        function stopFireworks() {
+            fireworksActive = false;
+            
+            if (fireworksInterval) {
+                clearInterval(fireworksInterval);
+                fireworksInterval = null;
+            }
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            // Show button and hide timer
+            document.querySelector('.fireworks-btn').style.display = 'inline-block';
+            document.getElementById('fireworksTimer').style.display = 'none';
+            
+            // Clear fireworks
+            document.getElementById('fireworksContainer').innerHTML = '';
+        }
+
+        function createFirework() {
+            const container = document.getElementById('fireworksContainer');
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#ff8b94', '#ff69b4', '#ff1493', '#ffd700', '#ff4757', '#2ed573', '#1e90ff', '#ff6348'];
+            
+            // Create main firework
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * 100 + '%';
+            firework.style.top = Math.random() * 100 + '%';
+            firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            firework.style.color = firework.style.backgroundColor;
+            
+            container.appendChild(firework);
+            
+            // Create more particles for enhanced effect
+            const particleCount = 15 + Math.floor(Math.random() * 10); // 15-25 particles
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.color = particle.style.backgroundColor;
+                
+                const angle = (i / particleCount) * 2 * Math.PI;
+                const distance = 60 + Math.random() * 120; // More varied distances
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--x', x + 'px');
+                particle.style.setProperty('--y', y + 'px');
+                
+                firework.appendChild(particle);
+            }
+            
+            // Remove firework after animation
+            setTimeout(() => {
+                if (firework.parentNode) {
+                    firework.parentNode.removeChild(firework);
+                }
+            }, 3000);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                if (currentPage === 2) {
+                    showSoulmateMessage();
+                } else if (currentPage === 3) {
+                    showYesPage();
+                } else if (currentPage === 4 && !fireworksActive) {
+                    startFireworks();
+                } else {
+                    nextPage();
+                }
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                prevPage();
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(event) {
+            touchStartX = event.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(event) {
+            touchEndX = event.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left
+                    if (currentPage === 2) {
+                        showSoulmateMessage();
+                    } else if (currentPage === 3) {
+                        showYesPage();
+                    } else if (currentPage === 4 && !fireworksActive) {
+                        startFireworks();
+                    } else {
+                        nextPage();
+                    }
+                } else {
+                    // Swipe right
+                    prevPage();
+                }
+            }
+        }
+    </script>
+</body>
+</html> 
