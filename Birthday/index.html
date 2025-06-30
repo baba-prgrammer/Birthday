@@ -1,0 +1,141 @@
+<!--
+  You can open this file directly in your browser (double-click or right-click > Open with... > your browser).
+  No server is required. Background images will appear once you add them to the folder (dummy1.jpg, dummy2.jpg, etc.).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Alizay!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-photo"></div>
+    <div class="container">
+        <!-- Page 1: Happy Birthday -->
+        <div class="page active" id="page1">
+            <div class="content">
+                <h1 class="main-title">Happy Birthday, Alizay!</h1>
+                <button class="next-btn" onclick="nextPage()">Next →</button>
+            </div>
+        </div>
+        <!-- Page 2: Birthday Wish -->
+        <div class="page" id="page2">
+            <div class="content">
+                <h1 class="wishes-title">Birthday Wish</h1>
+                <p class="wish-text">
+                    Wishing you countless happy returns of this beautiful day.<br><br>
+                    You are the one who transformed my world, and you are, without a doubt, my entire heart. Every moment, every thought, is filled with you. You are my heart, you are my life's greatest joy.<br><br>
+                    To have you in my life, and to hear your voice daily, means everything to me. I love every single thing you say, and our talks are the highlight of my day.<br><br>
+                    I love you more than words can express.<br>
+                    Looking forward to the moment we meet again.
+                </p>
+                <div class="nav-buttons">
+                    <button class="prev-btn" onclick="prevPage()">← Previous</button>
+                    <button class="next-btn" onclick="nextPage()">Next →</button>
+                </div>
+            </div>
+        </div>
+        <!-- Page 3: Be My Soulmate -->
+        <div class="page" id="page3">
+            <div class="content">
+                <h1 class="soulmate-title">Will You Be My Soulmate?</h1>
+                <p class="soulmate-message">
+                    Alizay, you are my everything. Will you be my soulmate and share this journey of life with me?
+                </p>
+                <div class="nav-buttons">
+                    <button class="yes-btn" onclick="showYesPageAndFireworks()">Yes 💖</button>
+                </div>
+            </div>
+        </div>
+        <!-- Page 4: Confirmation -->
+        <div class="page" id="page4">
+            <div class="content">
+                <h1 class="yes-title">Thank You, Alizay!</h1>
+                <p class="confirmation-message">
+                    You make my world complete. Happy Birthday and thank you for being my soulmate!
+                </p>
+                <div class="swap-pictures lifecycle-circle">
+                    <div class="lifecycle-wrapper">
+                        <img src="images/figure1.jpeg" class="lifecycle-img" id="lifecycle-img-0" alt="Alizay 1" />
+                        <img src="images/figure2.jpeg" class="lifecycle-img" id="lifecycle-img-1" alt="Alizay 2" />
+                        <img src="images/figure3.jpeg" class="lifecycle-img" id="lifecycle-img-2" alt="Alizay 3" />
+                        <img src="images/figure4.jpeg" class="lifecycle-img" id="lifecycle-img-3" alt="Alizay 4" />
+                    </div>
+                </div>
+                <div class="love-message">Love you Alizay</div>
+            </div>
+        </div>
+    </div>
+    <div id="fireworksContainer" class="fireworks-container"></div>
+    <script>
+        let currentPage = 1;
+        let swapInterval = null;
+        function nextPage() {
+            if (currentPage < 4) {
+                document.getElementById('page' + currentPage).classList.remove('active');
+                currentPage++;
+                document.getElementById('page' + currentPage).classList.add('active');
+                if (currentPage === 4) startSwapPictures();
+                else stopSwapPictures();
+            }
+        }
+        function prevPage() {
+            if (currentPage > 1) {
+                document.getElementById('page' + currentPage).classList.remove('active');
+                currentPage--;
+                document.getElementById('page' + currentPage).classList.add('active');
+                stopSwapPictures();
+            }
+        }
+        function showYesPageAndFireworks() {
+            document.getElementById('page3').classList.remove('active');
+            document.getElementById('page4').classList.add('active');
+            currentPage = 4;
+            startFireworks();
+            startSwapPictures();
+        }
+        // Fireworks logic
+        function startFireworks() {
+            const container = document.getElementById('fireworksContainer');
+            container.innerHTML = '';
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => createFirework(container), i * 200);
+            }
+            setTimeout(() => { container.innerHTML = ''; }, 5000);
+        }
+        function createFirework(container) {
+            const colors = ['#ff6b6b', '#f48fb1', '#ffd700', '#ce93d8', '#ad1457', '#fff176'];
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * 90 + '%';
+            firework.style.top = Math.random() * 60 + 10 + '%';
+            firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            container.appendChild(firework);
+            setTimeout(() => { firework.remove(); }, 1200);
+        }
+        // Picture swap logic
+        let lifecycleIndex = 0;
+        function startSwapPictures() {
+            highlightLifecycleImage(0);
+            if (swapInterval) clearInterval(swapInterval);
+            lifecycleIndex = 0;
+            swapInterval = setInterval(() => {
+                lifecycleIndex = (lifecycleIndex + 1) % 4;
+                highlightLifecycleImage(lifecycleIndex);
+            }, 2000);
+        }
+        function stopSwapPictures() {
+            if (swapInterval) clearInterval(swapInterval);
+            swapInterval = null;
+        }
+        function highlightLifecycleImage(idx) {
+            for (let i = 0; i < 4; i++) {
+                const img = document.getElementById('lifecycle-img-' + i);
+                if (img) img.classList.toggle('active-lifecycle', i === idx);
+            }
+        }
+    </script>
+</body>
+</html> 
